@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Michael Jordan · Data Agents Research</title>
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap masthead">
+      <span class="project"><span class="court" aria-hidden="true">◉</span> Data Agents Research</span>
+      <span id="mode" class="mode">Conectando…</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <p class="eyebrow">NBA · 1984–2003</p>
+        <h1 id="title">Michael<br>Jordan<span>.</span></h1>
+        <p class="subtitle">Explora su carrera partido por partido.</p>
+      </div>
+      <dl class="career">
+        <div><dt>Partidos</dt><dd>1,251</dd></div>
+        <div><dt>Temporadas</dt><dd>15</dd></div>
+        <div><dt>Equipos</dt><dd class="teams">Bulls · Wizards</dd></div>
+      </dl>
+    </section>
+    <section class="workspace" aria-label="Exploración de datos">
+      <div class="panel questions">
+        <div class="panel-heading">
+          <h2>Pregunta al agente</h2>
+          <button type="button" id="reset" class="quiet" hidden>Nueva consulta</button>
+        </div>
+        <div class="examples" aria-label="Preguntas de ejemplo">
+          <button type="button" data-question="Promedio de puntos por temporada">Puntos por temporada</button>
+          <button type="button" data-question="Compara el promedio de puntos en regular y playoffs">Regular vs. playoffs</button>
+          <button type="button" data-question="¿Cuántos triples-dobles hizo por temporada?">Triples-dobles</button>
+          <button type="button" data-question="Top 5 partidos por puntos contra los Celtics">Top vs. Celtics</button>
+        </div>
+        <div id="history" class="history" role="log" aria-label="Conversación" hidden></div>
+        <form id="query">
+          <label for="question" class="sr-only">Pregunta sobre Michael Jordan</label>
+          <textarea id="question" maxlength="500" rows="2" required placeholder="¿Cuántos triples anotó en 1996-97?"></textarea>
+          <button type="submit" id="submit">Consultar <span aria-hidden="true">↗</span></button>
+        </form>
+        <p class="tip">Continúa con «¿Y en playoffs?» para conservar el contexto.</p>
+      </div>
+      <div class="panel result" aria-labelledby="result-title">
+        <div class="panel-heading"><h2 id="result-title">Resultados</h2></div>
+        <div id="output">
+          <p class="tip">Aquí aparecerán el alcance de la consulta, los datos y su gráfica.</p>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <a href="https://www.kaggle.com/datasets/eoinamoore/historical-nba-data-and-player-box-scores">Dataset de Eoin A. Moore ↗</a>
+      <a href="https://www.nba.com/stats/help/glossary">Glosario NBA ↗</a>
+    </footer>
+  </main>
+</body>
+</html>
