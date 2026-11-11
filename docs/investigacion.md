@@ -50,6 +50,20 @@ Las comprobaciones de código se reproducen con `python -m unittest discover -s 
 
 Los totales de partidos y puntos se contrastaron con los registros publicados por la NBA. Los máximos se verificaron con las crónicas oficiales. [Guía de medios de la NBA](https://cdn.nba.com/teams/uploads/sites/1610612740/2024/10/2024-25-Pelicans-Media-Guide-v2.pdf), [líderes NBA en playoffs](https://www.nba.com/stats/alltime-leaders?ActiveFlag=No&SeasonType=Playoffs), [69 puntos en regular](https://www.nba.com/news/legendary-moments-history-michael-jordan-69-points-vs-cleveland-cavs-1990), [63 en playoffs](https://www.nba.com/news/most-points-scored-nba-playoff-game)
 
+### Ensayo del modelo local
+
+Se ejecutaron diez entradas por la API del prototipo en Windows, con Qwen2.5-1.5B-Instruct cuantizado a Q4_K_M y llama.cpp b12262. Tres resultados conservaron el plan de Qwen, seis usaron las reglas de control y «¿Cuántos dobles hizo?» recibió una solicitud de aclaración. Las consultas con inferencia tardaron aproximadamente de 2.5 a 5.9 segundos en este equipo.
+
+| Entrada | Resultado observado | Interpretación aplicada |
+|---|---|---|
+| Compara el promedio de puntos en regular y playoffs. | Regular 30.12, playoffs 33.45. | Reglas de control |
+| ¿Cuántos triples anotó en 1996-97? | 124, con 111 en regular y 13 en playoffs. | Qwen |
+| ¿Y en playoffs? | 13 en 1996-97. | Reglas de control |
+| ¿Cuál era su producción anotadora habitual en cada una de sus campañas? | Promedio de puntos por partido agrupado en 15 temporadas. | Qwen |
+| Enséñame sus actuaciones de mayor anotación frente a Boston. | Clasificación cuyo primer partido tiene 63 puntos. | Reglas de control |
+
+Durante la iteración, el esquema aceptó un plan con una temporada que la persona no había indicado. Otra consulta sobre la mayor anotación ante Boston seleccionó triples. Se agregó el control de coincidencia con las reglas y la búsqueda por ciudad cuando el rival se identifica sin ambigüedad. Qwen sigue pudiendo interpretar mal las preguntas que quedan fuera de las reglas. Este ensayo describe el comportamiento de las entradas elegidas. Para estimar la precisión harán falta preguntas nuevas de los participantes y una comparación sistemática contra respuestas verificadas.
+
 ### Resultados de campo e iteración
 
 Pendientes hasta completar las sesiones. Para cada tarea se calculará la proporción completada sin ayuda y la mediana de tiempo, indicando el número de observaciones. También se registrarán las confusiones recurrentes de métrica y alcance y se resumirá la disposición a pagar como dato exploratorio de la muestra.

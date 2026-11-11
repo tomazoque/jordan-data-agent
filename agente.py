@@ -136,13 +136,14 @@ class Agent:
         if query_metrics:
             plan["metrica"] = next(iter(query_metrics))
             plan["umbral"] = -1
-        if re.search(r"\b(promedio|media|promedia|promedio por partido|ppg)\b|por partido\b", q):
-            plan["operacion"] = "promedio"
-        elif re.search(r"\b(top|lista|muestra|dame|que partidos|cuales|mejores)\b", q) and re.search(
-            r"\b(partidos|juegos|top|lista)\b", q
-        ):
+        if (re.search(r"\b(top|lista|muestra|dame|ensename|que partidos|cuales|mejores)\b", q)
+                and re.search(r"\b(partidos|juegos|encuentros|actuaciones|top|lista)\b", q)):
             plan["operacion"], plan["grupo"] = "partidos", ""
-        elif re.search(r"\b(maximo|record|mas puntos en un partido|mayor)\b", q):
+        elif re.search(r"\b(maximo|record|mas puntos en un partido)\b", q):
+            plan["operacion"] = "maximo"
+        elif re.search(r"\b(promedio|media|promedia|ppg)\b|por partido\b", q):
+            plan["operacion"] = "promedio"
+        elif re.search(r"\bmayor\b", q):
             plan["operacion"] = "maximo"
         elif re.search(r"\b(total|totales|cuant[oa]s?|suma)\b", q):
             plan["operacion"] = "total"
@@ -181,7 +182,9 @@ class Agent:
         rivals = {normalize(value): value for value in self.options["rival"]}
         aliases = defaultdict(list)
         for name, value in rivals.items():
-            aliases[name.split()[-1]].append(value)
+            city, nickname = name.rsplit(" ", 1)
+            aliases[city].append(value)
+            aliases[nickname].append(value)
         rival_match = re.search(r"\b(?:contra|frente a|vs\.?)\s+(?:los |las )?(.+)", q)
         if rival_match:
             for name, value in sorted(rivals.items(), key=lambda item: -len(item[0])):
@@ -189,8 +192,8 @@ class Agent:
                     plan["rival"] = value
                     break
             else:
-                nickname = rival_match[1].split()[0].strip(".,!?")
-                choices = aliases[nickname]
+                choices = next((aliases[name] for name in sorted(aliases, key=len, reverse=True)
+                                if re.match(rf"{re.escape(name)}\b", rival_match[1])), [])
                 if len(choices) != 1:
                     raise ValueError("Indica el nombre completo del rival, por ejemplo Boston Celtics.")
                 plan["rival"] = choices[0]
